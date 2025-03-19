@@ -40,7 +40,22 @@ app.get('/menus/navbarItems', async (req, res) => {
     }
     run().catch(console.dir);
 });
-
+app.get('/main/categories', async (req, res) => {
+    async function run() {
+        try {
+            const database = await connectToDatabase();
+            const categories = database.collection('categories');
+            const cursor = categories.find();
+            const result = await cursor.toArray()
+            res.json(result);
+            console.log(result)
+        } catch (error) {
+            console.error('Error handling request:', error);
+            res.status(500).json({error: 'Internal server error'});
+        }
+    }
+    run().catch(console.dir);
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
